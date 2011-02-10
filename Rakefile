@@ -17,7 +17,7 @@ remote_task :essential, :roles => :app do
 end
 
 desc 'Ruby'
-remote_task :install_ruby => :essential, :roles => :app do
+remote_task :ruby => :essential, :roles => :app do
     ruby_version = 'ruby-1.9.2-p136'
     installed_version = run 'ruby -v'
     return if installed_version.include?(ruby_version)
@@ -46,6 +46,8 @@ remote_task :jenkins => :java, :roles => :app do
   run 'sudo aptitude install jenkins'
 
 end
+
+task :all => [:ruby, :sqlite3, :jenkins]
 
 task :default do
     puts 'There is no default task, available tasks are:'

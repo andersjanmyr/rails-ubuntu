@@ -40,7 +40,7 @@ remote_task :ruby, :roles => :app do
 end
 
 desc "Sqlite"
-remote_task :sqlite3, :roles => :app do
+remote_task :sqlite, :roles => :app do
   install 'sqlite3 libsqlite3-dev'
 end
 
@@ -52,7 +52,7 @@ end
 desc 'Jenkins'
 remote_task :jenkins, :roles => :app do
   run 'wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -'
-  run 'sudo echo "deb http://pkg.jenkins-ci.org/debian binary/" > /etc/apt/sources.list.d/jenkins.list'
+  run 'echo "deb http://pkg.jenkins-ci.org/debian binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list'
   run 'sudo aptitude -y update'
   install ' jenkins'
 end

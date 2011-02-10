@@ -20,7 +20,7 @@ desc "Essential"
 remote_task :essential, :roles => :app do
   run 'sudo aptitude -y update'
   install 'build-essential libc6-dev-i386 git-core curl wget'
-  install 'zlib1g zlib1g-dev libxml2 libxml2-dev libxslt-dev'
+  install 'zlib1g zlib1g-dev libxml2 libxml2-dev libxslt-dev libssl-dev openssl'
 end
 
 desc 'Ruby'
@@ -37,6 +37,7 @@ remote_task :ruby, :roles => :app do
     run "cd #{ruby_version} && ./configure && make && sudo make install"
     run 'sudo gem update --system'
     run 'sudo gem install bundler'
+    run 'cd #{ruby_version}/ext/openssl && ruby extconf.rb && make && sudo make install'
 end
 
 desc "Sqlite"

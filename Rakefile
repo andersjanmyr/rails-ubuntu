@@ -21,6 +21,20 @@ remote_task :install_ruby, :roles => :app do
     run 'ruby -v'
 end
 
+desc "Install sqlite"
+remote_task :sqlite3, :roles => :app do
+  run 'sudo apt-get sqlite3 libsqlite3-dev'
+end
+
+desc 'Install Jenkins'
+remote_task :jenkins, :roles => :app do
+  run 'sudo apt-get open-jdk'
+  run 'wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -'
+  run 'sudo echo "deb http://pkg.jenkins-ci.org/debian binary/" > /etc/apt/sources.list.d/jenkins.list'
+  run 'sudo aptitude update'
+  run 'sudo aptitude install jenkins'
+
+end
 task :default do
     puts 'There is no default task, available tasks are:'
     system 'rake -T'

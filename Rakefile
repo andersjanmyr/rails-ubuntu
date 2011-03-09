@@ -7,8 +7,8 @@ rescue LoadError
     EOT
 end
 
-#set :domain, 'ec2-46-51-167-11.eu-west-1.compute.amazonaws.com'
-set :domain, 'ec2-46-137-16-12.eu-west-1.compute.amazonaws.com'
+set :domain, 'ec2-79-125-61-254.eu-west-1.compute.amazonaws.com'
+# set :domain, 'ec2-46-137-16-12.eu-west-1.compute.amazonaws.com'
 
 set :app, domain
 
@@ -37,7 +37,7 @@ remote_task :ruby, :roles => :app do
     run "cd #{ruby_version} && ./configure && make && sudo make install"
     run 'sudo gem update --system'
     run 'sudo gem install bundler'
-    run 'cd #{ruby_version}/ext/openssl && ruby extconf.rb && make && sudo make install'
+    run "cd #{ruby_version}/ext/openssl && ruby extconf.rb && make && sudo make install"
 end
 
 desc "Sqlite"
@@ -58,7 +58,12 @@ remote_task :jenkins, :roles => :app do
   install ' jenkins'
 end
 
-task :all => [:essential, :ruby, :sqlite3, :java, :jenkins]
+desc 'Sendmail'
+remote_task :sendmail, :roles => :app do
+  install 'sendmail'
+end
+
+task :all => [:essential, :ruby, :sqlite, :java, :jenkins, :sendmail]
 
 task :default do
     puts 'There is no default task, available tasks are:'

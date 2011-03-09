@@ -21,6 +21,7 @@ remote_task :essential, :roles => :app do
   run 'sudo aptitude -y update'
   install 'build-essential libc6-dev-i386 git-core curl wget'
   install 'zlib1g zlib1g-dev libxml2 libxml2-dev libxslt-dev libssl-dev openssl'
+  install 'libreadline5 libreadline5-dev libncurses5 libncurses5-dev'
 end
 
 desc 'Ruby'

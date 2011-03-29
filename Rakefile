@@ -64,6 +64,10 @@ remote_task :sendmail, :roles => :app do
   install 'sendmail'
 end
 
+desc 'XVFB'
+remote_task :xvfb, :roles => :app do
+  install 'xvfb'
+end
 task :all => [:essential, :ruby, :sqlite, :java, :jenkins, :sendmail]
 
 task :default do

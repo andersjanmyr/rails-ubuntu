@@ -26,7 +26,7 @@ end
 
 desc 'Ruby'
 remote_task :ruby, :roles => :app do
-    ruby_version = 'ruby-1.9.2-p136'
+    ruby_version = 'ruby-1.9.2-p290'
     begin
       installed_version = run 'ruby -v'
     rescue

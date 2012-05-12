@@ -7,26 +7,26 @@ rescue LoadError
     EOT
 end
 
-set :domain, 'ec2-79-125-61-254.eu-west-1.compute.amazonaws.com'
+set :domain, 'lexicon' 
 # set :domain, 'ec2-46-137-16-12.eu-west-1.compute.amazonaws.com'
 
 set :app, domain
 
-def install args
+def install_pkg args
   run "sudo aptitude -y install #{args}"
 end
 
 desc "Essential"
 remote_task :essential, :roles => :app do
   run 'sudo aptitude -y update'
-  install 'build-essential libc6-dev-i386 git-core curl wget'
-  install 'zlib1g zlib1g-dev libxml2 libxml2-dev libxslt-dev libssl-dev openssl'
-  install 'libreadline5 libreadline5-dev libncurses5 libncurses5-dev'
+  install_pkg 'build-essential libc6-dev-i386 git-core curl wget'
+  install_pkg 'zlib1g zlib1g-dev libxml2 libxml2-dev libxslt-dev libssl-dev openssl'
+  install_pkg 'libreadline5 libreadline5-dev libncurses5 libncurses5-dev'
 end
 
 desc 'Ruby'
 remote_task :ruby, :roles => :app do
-    ruby_version = 'ruby-1.9.2-p290'
+    ruby_version = 'ruby-1.9.3-p125'
     begin
       installed_version = run 'ruby -v'
     rescue
@@ -43,12 +43,12 @@ end
 
 desc "Sqlite"
 remote_task :sqlite, :roles => :app do
-  install 'sqlite3 libsqlite3-dev'
+  install_pkg 'sqlite3 libsqlite3-dev'
 end
 
 desc "Java"
 remote_task :java, :roles => :app do
-  install 'openjdk-6-jre default-jre icedtea6-plugin'
+  install_pkg 'openjdk-6-jre default-jre icedtea6-plugin'
 end
 
 desc 'Jenkins'
@@ -56,18 +56,20 @@ remote_task :jenkins, :roles => :app do
   run 'wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -'
   run 'echo "deb http://pkg.jenkins-ci.org/debian binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list'
   run 'sudo aptitude -y update'
-  install ' jenkins'
+  install_pkg ' jenkins'
 end
 
 desc 'Sendmail'
 remote_task :sendmail, :roles => :app do
-  install 'sendmail'
+  install_pkg 'sendmail'
 end
 
 desc 'XVFB'
 remote_task :xvfb, :roles => :app do
-  install 'xvfb'
+  install_pkg 'xvfb'
 end
+
+desc 'Install all the other tasks'
 task :all => [:essential, :ruby, :sqlite, :java, :jenkins, :sendmail]
 
 task :default do
